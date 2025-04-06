@@ -1,0 +1,25 @@
+# Ignore Visual Studio files
+.vs/
+.vscode/
+*.user
+*.suo
+*.vsp
+*.psess
+
+# Ignore build folders
+bin/
+obj/
+
+# Ignore package manager directories
+packages/
+
+# Ignore ReSharper files
+_ReSharper*/
+
+# Ignore any user-specific files
+*.userosscache
+*.sln.docstates
+
+# Ignore temporary files
+Thumbs.db
+ehthumbs.db
