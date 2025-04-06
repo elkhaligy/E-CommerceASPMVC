@@ -1,0 +1,87 @@
+﻿@model CreateProductViewModel;
+@{
+    ViewData["Title"] = "Add";
+}
+<link href="~/css/style.css" rel="stylesheet" />
+<h1>Add</h1>
+    <div class="form-body">
+        <div class="row">
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>Add Product</h3>
+                        <p>Fill in the data below.</p>
+                        <form asp-action="Add" class="requires-validation" novalidate>
+
+                           <!-- ✅ Correct binding -->
+<input class="form-control" asp-for="Product.Name" placeholder="Product Name" />
+<select class="form-control" asp-for="Product.CategoryId">
+    <option value="">-- Select Category --</option>
+                            @foreach (var category in Model.Categories)
+                            {
+            <option value="@category.CategoryId">@category.Name</option>
+                            }
+</select>
+
+<select class="form-control" asp-for="Product.BrandId">
+    <option value="">-- Select Brand --</option>
+                            @foreach (var brand in Model.Brands)
+                            {
+            <option value="@brand.BrandId">@brand.Name</option>
+                            }
+</select>
+
+<input class="form-control" asp-for="Product.AdminId" placeholder="AdminId" />
+
+
+                        @*    <div class="col-md-12"> *@
+                        @*         <select class="form-select mt-3" required> *@
+                        @*               <option selected disabled value="">Position</option> *@
+                        @*               <option value="jweb">Junior Web Developer</option> *@
+                        @*               <option value="sweb">Senior Web Developer</option> *@
+                        @*               <option value="pmanager">Project Manager</option> *@
+                        @*        </select> *@
+                        @*         <div class="valid-feedback">You selected a position!</div> *@
+                        @*         <div class="invalid-feedback">Please select a position!</div> *@
+                        @*    </div> *@
+
+
+                        @*    <div class="col-md-12"> *@
+                        @*       <input class="form-control" type="password" name="password" placeholder="Password" required> *@
+                        @*        <div class="valid-feedback">Password field is valid!</div> *@
+                        @*        <div class="invalid-feedback">Password field cannot be blank!</div> *@
+                        @*    </div> *@
+
+
+                        @*    <div class="col-md-12 mt-3"> *@
+                        @*     <label class="mb-3 mr-1" for="gender">Gender: </label> *@
+
+                        @*     <input type="radio" class="btn-check" name="gender" id="male" autocomplete="off" required> *@
+                        @*     <label class="btn btn-sm btn-outline-secondary" for="male">Male</label> *@
+
+                        @*     <input type="radio" class="btn-check" name="gender" id="female" autocomplete="off" required> *@
+                        @*     <label class="btn btn-sm btn-outline-secondary" for="female">Female</label> *@
+
+                        @*     <input type="radio" class="btn-check" name="gender" id="secret" autocomplete="off" required> *@
+                        @*     <label class="btn btn-sm btn-outline-secondary" for="secret">Secret</label> *@
+                        @*        <div class="valid-feedback mv-up">You selected a gender!</div> *@
+                        @*         <div class="invalid-feedback mv-up">Please select a gender!</div> *@
+                        @*     </div> *@
+
+                        @* <div class="form-check"> *@
+                        @*   <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required> *@
+                        @*   <label class="form-check-label">I confirm that all data are correct</label> *@
+                        @*  <div class="invalid-feedback">Please confirm that the entered data are all correct!</div> *@
+                        @* </div> *@
+
+
+                            <div class="form-button mt-3">
+                                <button id="submit" type="submit" class="btn btn-primary">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
