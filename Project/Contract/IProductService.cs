@@ -5,7 +5,7 @@ namespace Project.Contract
 {
     public interface IProductService
     {
-        Task AddProductAsync(Product product);
+        Task AddProductAsync(ProductCreateDTO dto);
         
     }
 }
