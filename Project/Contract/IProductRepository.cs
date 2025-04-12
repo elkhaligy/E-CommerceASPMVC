@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-
+using Project.Models;
 
 namespace Project.Contract
 {
     public interface IProductRepository
     {
-        Task addProductAsync(Product product);
-        public void edit(Product product);
-        public void delete(Product product);
-         List<Product> getAll();
-        public void save();
-         // getById(int id);
-      //  public List<Product> getByName(string name);
+        Task<Product?> GetByIdAsync(int id);
+        Task<IEnumerable<Product>> GetAllAsync();
+        Task<IEnumerable<Product>?> GetByCategoryIdAsync(int categoryId);
+        Task<IEnumerable<Product>?> GetByBrandIdAsync(int brandId);
+        Task<IEnumerable<Product>?> GetByAdminIdAsync(int adminId);
+        Task<IEnumerable<Product>?> SearchByNameAsync(string name);
+        Task AddAsync(Product product);
+        Task UpdateAsync(Product product);
+        Task DeleteAsync(Product product);
+        Task SaveChangesAsync();
     }
 }

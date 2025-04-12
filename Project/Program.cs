@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Project.Contract;
+using Project.Data;
 using Project.Repositories;
 using Project.Services;
 
@@ -15,7 +16,7 @@ namespace Project
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ApplicationContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddScoped<IProductRepository,ProductRepository>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IProductService,ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
