@@ -36,7 +36,7 @@ namespace Project.Data
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId)
+        public async Task<IEnumerable<Product>?> GetByCategoryIdAsync(int categoryId)
         {
             return await _context.Products
                 .Include(p => p.Category)
@@ -47,7 +47,7 @@ namespace Project.Data
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetByBrandIdAsync(int brandId)
+        public async Task<IEnumerable<Product>?> GetByBrandIdAsync(int brandId)
         {
             return await _context.Products
                 .Include(p => p.Category)
@@ -59,7 +59,7 @@ namespace Project.Data
 
         }
 
-        public async Task<IEnumerable<Product>> GetByAdminIdAsync(int adminId)
+        public async Task<IEnumerable<Product>?> GetByAdminIdAsync(int adminId)
         {
             return await _context.Products
                 .Include(p => p.Category)
@@ -70,7 +70,7 @@ namespace Project.Data
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Product>> SearchByNameAsync(string name)
+        public async Task<IEnumerable<Product>?> SearchByNameAsync(string name)
         {
             return await _context.Products
                 .Include(p => p.Category)
