@@ -6,7 +6,7 @@ namespace Project.Contract
 {
     public interface IProductRepository
     {
-         Task addProductAsync(Product product);
+        Task addProductAsync(Product product);
         public void edit(Product product);
         public void delete(Product product);
          List<Product> getAll();
