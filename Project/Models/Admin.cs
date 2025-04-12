@@ -5,15 +5,15 @@
         public int Id { get; set; }
 
         // User Info (could be linked with ASP.NET Identity)
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
+        public required string Email { get; set; }
 
         // Relationships
-        public ICollection<Product> Products { get; set; }  // Admin manages products
+        public ICollection<Product>? Products { get; set; }  // Admin manages products
 
         // You could also track actions performed by the admin, e.g., logs, etc.
-        public ICollection<AdminActionLog> ActionLogs { get; set; }
+        public ICollection<AdminActionLog>? ActionLogs { get; set; }
     }
 
 }

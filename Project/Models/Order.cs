@@ -9,10 +9,9 @@
         public decimal TotalAmount { get; set; }    
         public int StatusId { get; set; }
         public int PaymentId { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; }
-        public Payment Payment { get; set; }
-        public OrderStatus Status { get; set; }
-
-        public Customer Customer { get; set; }
+        public ICollection<OrderItem>? OrderItems { get; set; }
+        public Payment? Payment { get; set; }
+        public OrderStatus? Status { get; set; }
+        public Customer? Customer { get; set; }
     }
 }
