@@ -1,46 +1,48 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Project.Contract;
+using Project.Models;
 
-namespace Project.Repositories
+namespace Project.Data
 {
-    public class CategoryRepository:ICategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
-        private readonly ApplicationContext _context; 
-        public CategoryRepository( ApplicationContext context)
+        private readonly ApplicationContext _context;
+
+        public CategoryRepository(ApplicationContext context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
-        {
-          return await _context.Categories.ToListAsync();
 
-        }
-     public async Task<Category> GetByIdAsync(int id)
+        public async Task<Category?> GetByIdAsync(int id)
         {
-            return await _context.Categories.FindAsync(id);
+            return await _context.Categories
+                .FirstOrDefaultAsync(c => c.CategoryId == id);
         }
-     public async Task UpdateCategoryAsync(Category category)
-        {
-           _context.Categories.Update(category);
-            await _context.SaveChangesAsync();  
-        }
-     public async Task DeleteCategoryAsync(int id)
-        {
-           var category= await _context.Categories.FindAsync(id);
-            if (category != null)
-            {
-            _context.Categories.Remove(category);
-             await _context.SaveChangesAsync();
 
-            }
-
-
-        }
-        public async Task AddCategory(Category category)
+        public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            _context.Categories.Add(category);
+            return await _context.Categories
+                .Include(c => c.Products)
+                .ToListAsync();
+        }
+
+        public async Task AddAsync(Category category)
+        {
+            await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
-
         }
+
+        public async Task UpdateAsync(Category category)
+        {
+            _context.Categories.Update(category);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Category category)
+        {
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
+        }
+
     }
-}
+} 

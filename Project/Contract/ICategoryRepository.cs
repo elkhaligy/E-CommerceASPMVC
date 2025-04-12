@@ -1,11 +1,13 @@
-﻿namespace Project.Contract
+﻿using Project.Models;
+
+namespace Project.Contract
 {
     public interface ICategoryRepository
     {
-        Task<IEnumerable<Category>> GetAllCategoriesAsync();
-        Task<Category> GetByIdAsync(int id);
-        Task UpdateCategoryAsync(Category category);
-        Task DeleteCategoryAsync(int id);
-        Task AddCategory(Category category);    
+        Task<Category?> GetByIdAsync(int id);
+        Task<IEnumerable<Category>> GetAllAsync();
+        Task AddAsync(Category category);
+        Task UpdateAsync(Category category);
+        Task DeleteAsync(Category category);
     }
 }

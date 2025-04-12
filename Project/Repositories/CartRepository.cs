@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Project.Contract;
 using Project.Models;
 
 namespace Project.Repositories

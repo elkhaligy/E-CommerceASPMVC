@@ -1,6 +1,6 @@
 using Project.Models;
 
-namespace Project.Services
+namespace Project.Contract
 {
     public interface ICartService
     {

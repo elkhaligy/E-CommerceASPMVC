@@ -98,7 +98,7 @@ namespace Project.Services
                 throw new KeyNotFoundException($"Product with ID {product.ProductId} not found");
 
             // Business logic: Validate product data
-            ValidateProduct(product);
+            //ValidateProduct(product);
 
             // Business logic: Check if category exists
             var category = await _categoryService.GetCategoryByIdAsync(product.CategoryId);

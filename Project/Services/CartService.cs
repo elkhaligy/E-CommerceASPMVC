@@ -1,5 +1,5 @@
+using Project.Contract;
 using Project.Models;
-using Project.Repositories;
 
 namespace Project.Services
 {

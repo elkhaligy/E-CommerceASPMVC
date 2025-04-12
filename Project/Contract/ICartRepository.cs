@@ -1,6 +1,6 @@
 using Project.Models;
 
-namespace Project.Repositories
+namespace Project.Contract
 {
     public interface ICartRepository
     {
