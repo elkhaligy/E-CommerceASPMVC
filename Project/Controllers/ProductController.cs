@@ -1,12 +1,9 @@
-﻿using Humanizer;
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Project.Contract;
 using Project.DTO;
 using Project.Models;
 using Project.Services;
 using Project.ViewModel;
-using System.Threading.Tasks;
 
 namespace Project.Controllers
 {
@@ -14,34 +11,91 @@ namespace Project.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-        private readonly IBrandService _BrandService;
+        private readonly IBrandService _brandService;
         private readonly ApplicationContext _context;
-        public ProductController(IProductService productService, ICategoryService categoryService, IBrandService brandService, ApplicationContext context)
+
+        public ProductController(
+            IProductService productService,
+            ICategoryService categoryService,
+            IBrandService brandService,
+            ApplicationContext context)
         {
             _productService = productService;
             _categoryService = categoryService;
-            _BrandService = brandService;
+            _brandService = brandService;
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Add()
+        // GET: Product
+        public async Task<IActionResult> Index()
         {
-            var categories = await _categoryService.GetAllCategoriesAsync();
-            var brands = await _BrandService.GetAllBrandsAsync();
-            var ViewModel = new CreateProductViewModel
-            {
-                Categories = categories,
-                Brands = brands,
-            };
-            return View("Add", ViewModel);
+            var products = await _productService.GetAllProductsAsync();
+            return View(products);
         }
-        [HttpPost]
-        public async Task<IActionResult> Add(Product product)
+
+        // GET: Product/Details/5
+        public async Task<IActionResult> Details(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
+                var product = await _productService.GetProductByIdAsync(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+                return View(product);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        // GET: Product/Create
+        public async Task<IActionResult> Create()
+        {
+            var viewModel = new CreateProductViewModel
+            {
+                Categories = await _categoryService.GetAllCategoriesAsync(),
+                Brands = await _brandService.GetAllBrandsAsync()
+            };
+            return View(viewModel);
+        }
+
+        // POST: Product/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Product product)
+        {
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new CreateProductViewModel
+                {
+                    Product = product,
+                    Categories = await _categoryService.GetAllCategoriesAsync(),
+                    Brands = await _brandService.GetAllBrandsAsync()
+                };
+                return View(viewModel);
+            }
+
+            try
+            {
+                if (product.ImageFiles == null || !product.ImageFiles.Any())
+                {
+                    ModelState.AddModelError("ImageFiles", "At least one image is required");
+                    var viewModel = new CreateProductViewModel
+                    {
+                        Product = product,
+                        Categories = await _categoryService.GetAllCategoriesAsync(),
+                        Brands = await _brandService.GetAllBrandsAsync()
+                    };
+                    return View(viewModel);
+                }
+
+                product.AdminId = 1; // Assuming the admin ID is 1 for this example
                 await _productService.AddProductAsync(product);
+
+                // Handle image uploads
                 foreach (var file in product.ImageFiles)
                 {
                     using var ms = new MemoryStream();
@@ -52,30 +106,175 @@ namespace Project.Controllers
                         ProductId = product.ProductId,
                         ImageData = imageBytes
                     };
-                    await _context.ProductImages.AddAsync(productImage);
+                    await _context.ProductImages.AddAsync(productImage); // This needs changing when we implement the productimages service
                 }
                 await _context.SaveChangesAsync();
-                return Content("Product added successfully");
 
+                TempData["SuccessMessage"] = "Product created successfully";
+                return RedirectToAction("Index");
             }
-            else
+            catch (Exception ex)
             {
-                var categories = await _categoryService.GetAllCategoriesAsync();
-                var brands = await _BrandService.GetAllBrandsAsync();
-                var ViewModel = new CreateProductViewModel
+                ModelState.AddModelError("", "An error occurred while creating the product. Please try again.");
+                var viewModel = new CreateProductViewModel
                 {
-                    Categories = categories,
-                    Brands = brands,
                     Product = product,
+                    Categories = await _categoryService.GetAllCategoriesAsync(),
+                    Brands = await _brandService.GetAllBrandsAsync()
                 };
-                return View("Add", ViewModel);
+                return View(viewModel);
             }
-            
-
         }
-        public IActionResult Index()
+
+        // GET: Product/Edit/5
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new EditProductViewModel
+            {
+                Product = product,
+                Categories = await _categoryService.GetAllCategoriesAsync(),
+                Brands = await _brandService.GetAllBrandsAsync()
+            };
+            return View(viewModel);
+        }
+
+        // POST: Product/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Product product, List<int> imagesToDelete)
+        {
+            if (id != product.ProductId) // This case can only happen if the user manipulates the form
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new EditProductViewModel
+                {
+                    Product = product,
+                    Categories = await _categoryService.GetAllCategoriesAsync(),
+                    Brands = await _brandService.GetAllBrandsAsync()
+                };
+                return View(viewModel);
+            }
+
+            try
+            {
+                await _productService.UpdateProductAsync(product);
+                // Handle images to delete
+                // Check first if the image to delete list has data
+                // iterate through it, you will find the image id
+                // use the context to find the image with that specific id
+                // remove that image from the db
+                if (imagesToDelete != null && imagesToDelete.Any())
+                {
+                    foreach (var imageId in imagesToDelete)
+                    {
+                        var image = await _context.ProductImages.FindAsync(imageId);
+                        if (image != null)
+                        {
+                            _context.ProductImages.Remove(image);
+                        }
+                    }
+                    await _context.SaveChangesAsync();
+                }
+
+                // Handle new image uploads if any
+                if (product.ImageFiles != null && product.ImageFiles.Any())
+                {
+                    // Add new images
+                    foreach (var file in product.ImageFiles)
+                    {
+                        using var ms = new MemoryStream();
+                        await file.CopyToAsync(ms);
+                        var imageBytes = ms.ToArray();
+                        var productImage = new ProductImage
+                        {
+                            ProductId = product.ProductId,
+                            ImageData = imageBytes
+                        };
+                        await _context.ProductImages.AddAsync(productImage);
+                    }
+                    await _context.SaveChangesAsync();
+                }
+
+                TempData["SuccessMessage"] = "Product updated successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "An error occurred while updating the product. Please try again.");
+                var viewModel = new EditProductViewModel
+                {
+                    Product = product,
+                    Categories = await _categoryService.GetAllCategoriesAsync(),
+                    Brands = await _brandService.GetAllBrandsAsync()
+                };
+                return View(viewModel);
+            }
+        }
+
+        // GET: Product/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+
+        // POST: Product/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            try
+            {
+                var product = await _productService.GetProductByIdAsync(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+                await _productService.DeleteProductAsync(product);
+                TempData["SuccessMessage"] = "Product deleted successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while deleting the product.";
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        // GET: Product/Search
+        public async Task<IActionResult> Search(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var products = await _productService.SearchProductsByNameAsync(searchTerm);
+            ViewBag.SearchTerm = searchTerm;
+            return View("Index", products);
         }
     }
 }

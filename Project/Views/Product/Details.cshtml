@@ -1,0 +1,81 @@
+@model Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container">
+    <h1>Product Details</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">@Model.Name</h4>
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Price</dt>
+                                <dd class="col-sm-8">@Model.Price.ToString("C")</dd>
+
+                                <dt class="col-sm-4">Category</dt>
+                                <dd class="col-sm-8">@Model.Category?.Name</dd>
+
+                                <dt class="col-sm-4">Brand</dt>
+                                <dd class="col-sm-8">@Model.Brand?.Name</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <h5>Product Images</h5>
+                        <div class="row">
+                            @if (Model.Images?.Any() == true)
+                            {
+                                @foreach (var image in Model.Images)
+                                {
+                                    <div class="col-md-3 mb-2">
+                                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(image.ImageData)" 
+                                             class="img-thumbnail" alt="Product Image" />
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-12">
+                                    <p class="text-muted">No images available</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (Model.Reviews?.Any() == true)
+                    {
+                        <div class="mt-4">
+                            <h5>Reviews</h5>
+                            @foreach (var review in Model.Reviews)
+                            {
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="card-subtitle mb-2 text-muted">Rating: @review.Rating/5</h6>
+                                            <small class="text-muted">@review.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                        </div>
+                                        <p class="card-text">@review.Comment</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@Model.ProductId" class="btn btn-danger">Delete</a>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,94 @@
+@model Project.ViewModel.EditProductViewModel
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="container">
+    <h1>Edit Product</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Product.ProductId" />
+                
+                <div class="form-group">
+                    <label asp-for="Product.Name" class="control-label"></label>
+                    <input asp-for="Product.Name" class="form-control" />
+                    <span asp-validation-for="Product.Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Product.Price" class="control-label"></label>
+                    <input asp-for="Product.Price" class="form-control" />
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Product.CategoryId" class="control-label">Category</label>
+                    <select asp-for="Product.CategoryId" class="form-control" 
+                            asp-items="@(new SelectList(Model.Categories, "CategoryId", "Name"))">
+                        <option value="">-- Select Category --</option>
+                    </select>
+                    <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Product.BrandId" class="control-label">Brand</label>
+                    <select asp-for="Product.BrandId" class="form-control" 
+                            asp-items="@(new SelectList(Model.Brands, "BrandId", "Name"))">
+                        <option value="">-- Select Brand --</option>
+                    </select>
+                    <span asp-validation-for="Product.BrandId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Current Images</label>
+                    <div class="row">
+                        @if (Model.Product.Images?.Any() == true)
+                        {
+                            @for (int i = 0; i < Model.Product.Images.Count(); i++)
+                            {
+                                    var image = Model.Product.Images.ElementAt(i);
+                                    <div class="col-md-3 mb-2">
+                                        <div class="card">
+                                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(image.ImageData)" 
+                                                 class="card-img-top" alt="Product Image" />
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                        <label class="form-check-label" for="img@(image.Id)">Delete this image</label>
+                                                        <input type="checkbox" class="form-check-input" name="ImagesToDelete" value="@image.Id" id="img@(image.Id)" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-12">
+                                <p class="text-muted">No images available</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Product.ImageFiles" class="control-label">New Images (will replace existing ones)</label>
+                    <input asp-for="Product.ImageFiles" type="file" multiple class="form-control"  />
+                    <span asp-validation-for="Product.ImageFiles" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

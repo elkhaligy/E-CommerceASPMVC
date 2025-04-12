@@ -4,7 +4,7 @@ namespace Project.Contract
 {
     public interface IProductService
     {
-        Task<Product> GetProductByIdAsync(int id);
+        Task<Product?> GetProductByIdAsync(int id);
         Task<IEnumerable<Product>> GetAllProductsAsync();
         Task<IEnumerable<Product>?> GetProductsByCategoryAsync(int categoryId);
         Task<IEnumerable<Product>?> GetProductsByBrandAsync(int brandId);

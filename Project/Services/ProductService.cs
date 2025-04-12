@@ -20,11 +20,9 @@ namespace Project.Services
             _brandService = brandService;
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
+        public async Task<Product?> GetProductByIdAsync(int id)
         {
             var product = await _productRepository.GetByIdAsync(id);
-            if (product == null)
-                throw new KeyNotFoundException($"Product with ID {id} not found");
             return product;
         }
 

@@ -23,6 +23,6 @@ public class Product
     public ICollection<OrderItem>? Items { get; set; }
     public ICollection<Tag>? Tags { get; set; }
     [NotMapped]
-    public required List<IFormFile> ImageFiles { get; set; } = new List<IFormFile>();
+    public List<IFormFile>? ImageFiles { get; set; } = new List<IFormFile>();
 
 }
