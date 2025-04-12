@@ -23,3 +23,6 @@ _ReSharper*/
 # Ignore temporary files
 Thumbs.db
 ehthumbs.db
+
+
+/Project/appsettings.json
