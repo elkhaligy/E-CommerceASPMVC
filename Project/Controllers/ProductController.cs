@@ -28,7 +28,7 @@ namespace Project.Controllers
         public async Task<IActionResult> Add()
         {
             var categories = await _categoryService.GetCategoriesAsync();
-            var brands = await _BrandService.GetBrandsAsync();
+            var brands = await _BrandService.GetAllBrandsAsync();
             var ViewModel = new CreateProductViewModel
             {
                 Categories = categories,
@@ -61,7 +61,7 @@ namespace Project.Controllers
             else
             {
                 var categories = await _categoryService.GetCategoriesAsync();
-                var brands = await _BrandService.GetBrandsAsync();
+                var brands = await _BrandService.GetAllBrandsAsync();
                 var ViewModel = new CreateProductViewModel
                 {
                     Categories = categories,
