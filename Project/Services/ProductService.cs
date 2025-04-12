@@ -11,16 +11,16 @@ namespace Project.Services
             _IProductRepository = productRepository;
             
         }
-        public async Task AddProductAsync(ProductCreateDTO dto) 
+        public async Task AddProductAsync(Product product) 
         {
-            var product = new Product
-            {
-                Name = dto.Name,
-                CategoryId = dto.CategoryId,
-                BrandId = dto.BrandId,
-                AdminId = dto.AdminId,
+            //var product = new Product
+            //{
+            //    Name = dto.Name,
+            //    CategoryId = dto.CategoryId,
+            //    BrandId = dto.BrandId,
+            //    AdminId = dto.AdminId,
 
-            };
+            //};
             //all logic are here 
            await _IProductRepository.addProductAsync(product);
         }
