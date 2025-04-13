@@ -7,7 +7,7 @@
         public decimal Amount { get; set; }
         public int PaymentMethodId { get; set; }
         public DateTime PaymentDate { get; set; }
-        public Order? Order { get; set; }
-        public PaymentMethod? PaymentMethod { get; set; }
+        public virtual Order? Order { get; set; }
+        public virtual PaymentMethod? PaymentMethod { get; set; }
     }
 }

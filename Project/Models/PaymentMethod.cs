@@ -4,7 +4,7 @@
     {
         public int PaymentMethodId { get; set; }
         public required string Name { get; set; }
-        public ICollection<Payment>? Payments { get; set; }
+        public virtual ICollection<Payment>? Payments { get; set; }
 
     }
 }

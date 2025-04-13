@@ -10,7 +10,7 @@
         public required string PostalCode { get; set; }
         public required string Country { get; set; }
         public required string Phone { get; set; }
-        public Customer? Customer { get; set; }
+        public virtual Customer? Customer { get; set; }
 
 
     }

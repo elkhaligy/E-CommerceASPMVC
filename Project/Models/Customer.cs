@@ -10,10 +10,10 @@
         public required string PhoneNumber { get; set; }
         public required DateTime CreatedAt { get; set; }
         public required DateTime UpdatedAt { get; set; }
-        public ICollection<Order>? Orders { get; set; }
-        public ICollection<Review>? Reviews { get; set; }
-        public ICollection<Address>? Addresses { get; set; }
-        public Cart? Cart { get; set; }
+        public virtual ICollection<Order>? Orders { get; set; }
+        public virtual ICollection<Review>? Reviews { get; set; }
+        public virtual ICollection<Address>? Addresses { get; set; }
+        public virtual Cart? Cart { get; set; }
 
     }
 }

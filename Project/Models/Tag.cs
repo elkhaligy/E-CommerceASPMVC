@@ -5,8 +5,8 @@
         public int TagId { get; set; }
         public required string Name { get; set; }
 
-        public ICollection<ProductTag>? ProductTags { get; set; }
-        public ICollection<Product>? Products { get; set; }
+        public virtual ICollection<ProductTag>? ProductTags { get; set; }
+        public virtual ICollection<Product>? Products { get; set; }
     }
 
 }

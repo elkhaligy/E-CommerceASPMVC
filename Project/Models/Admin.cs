@@ -10,10 +10,10 @@
         public required string Email { get; set; }
 
         // Relationships
-        public ICollection<Product>? Products { get; set; }  // Admin manages products
+        public virtual ICollection<Product>? Products { get; set; }  // Admin manages products
 
         // You could also track actions performed by the admin, e.g., logs, etc.
-        public ICollection<AdminActionLog>? ActionLogs { get; set; }
+        public virtual ICollection<AdminActionLog>? ActionLogs { get; set; }
     }
 
 }

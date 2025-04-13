@@ -4,6 +4,6 @@
     {
         public int OrderStatusId { get; set; }
         public string? Status { get; set; }
-        public ICollection<Order>? Orders { get; set; }
+        public virtual ICollection<Order>? Orders { get; set; }
     }
 }

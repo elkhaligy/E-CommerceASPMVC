@@ -4,7 +4,7 @@
     {   
         public int Id { get; set; }
         public int ProductId { get; set; }
-        public Product? Product { get; set; }
+        public virtual Product? Product { get; set; }
         // The actual image data stored as byte array
         public required byte[] ImageData { get; set; }
 
