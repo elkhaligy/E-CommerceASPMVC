@@ -79,7 +79,8 @@ namespace Project.Services
             if (existingProduct != null)
                 throw new InvalidOperationException($"A product with name '{product.Name}' already exists");
 
-            await _productRepository.AddAsync(product);
+            _productRepository.Add(product);
+            await _productRepository.SaveChangesAsync();
         }
 
         public async Task UpdateProductAsync(Product product)
@@ -97,7 +98,8 @@ namespace Project.Services
             if (brand == null)
                 throw new KeyNotFoundException($"Brand with ID {product.BrandId} not found");
 
-            await _productRepository.UpdateAsync(product);
+            _productRepository.Update(product);
+            await _productRepository.SaveChangesAsync();
         }
 
         public async Task DeleteProductAsync(Product product)
@@ -111,7 +113,8 @@ namespace Project.Services
             if (existingProduct.Items?.Any() == true)
                 throw new InvalidOperationException("Cannot delete product with existing orders");
 
-            await _productRepository.DeleteAsync(product);
+            _productRepository.Delete(product);
+            await _productRepository.SaveChangesAsync();
         }
 
     }

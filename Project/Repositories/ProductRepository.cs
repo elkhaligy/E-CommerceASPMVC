@@ -2,43 +2,41 @@ using Microsoft.EntityFrameworkCore;
 using Project.Contract;
 using Project.Models;
 
-namespace Project.Data
+namespace Project.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
-        private readonly ApplicationContext _context;
 
-        public ProductRepository(ApplicationContext context)
+        public ProductRepository(ApplicationContext context) : base(context)
         {
-            _context = context;
         }
 
-        public async Task<Product?> GetByIdAsync(int id)
-        {
-            // We can get rid of these includes later by using lazy loading
-            return await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Brand)
-                .Include(p => p.Admin)
-                .Include(p => p.Images)
-                .Include(p => p.Tags)
-                .FirstOrDefaultAsync(p => p.ProductId == id);
-        }
+        //public async Task<Product?> GetByIdAsync(int id)
+        //{
+        //    // We can get rid of these includes later by using lazy loading
+        //    return await _context.Products
+        //        .Include(p => p.Category)
+        //        .Include(p => p.Brand)
+        //        .Include(p => p.Admin)
+        //        .Include(p => p.Images)
+        //        .Include(p => p.Tags)
+        //        .FirstOrDefaultAsync(p => p.ProductId == id);
+        //}
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
-        {
-            return await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Brand)
-                .Include(p => p.Admin)
-                .Include(p => p.Images)
-                .Include(p => p.Tags)
-                .ToListAsync();
-        }
+        //public async Task<IEnumerable<Product>> GetAllAsync()
+        //{
+        //    return await _context.Products
+        //        .Include(p => p.Category)
+        //        .Include(p => p.Brand)
+        //        .Include(p => p.Admin)
+        //        .Include(p => p.Images)
+        //        .Include(p => p.Tags)
+        //        .ToListAsync();
+        //}
 
         public async Task<IEnumerable<Product>?> GetByCategoryIdAsync(int categoryId)
         {
-            return await _context.Products
+            return await _dbSet
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.Admin)
@@ -49,7 +47,7 @@ namespace Project.Data
 
         public async Task<IEnumerable<Product>?> GetByBrandIdAsync(int brandId)
         {
-            return await _context.Products
+            return await _dbSet
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.Admin)
@@ -61,7 +59,7 @@ namespace Project.Data
 
         public async Task<IEnumerable<Product>?> GetByAdminIdAsync(int adminId)
         {
-            return await _context.Products
+            return await _dbSet
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.Admin)
@@ -72,7 +70,7 @@ namespace Project.Data
 
         public async Task<IEnumerable<Product>?> SearchByNameAsync(string name)
         {
-            return await _context.Products
+            return await _dbSet
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.Admin)
@@ -81,27 +79,27 @@ namespace Project.Data
                 .ToListAsync();
         }
 
-        public async Task AddAsync(Product product)
-        {
-            await _context.Products.AddAsync(product);
-            await SaveChangesAsync();
-        }
+        //public async Task AddAsync(Product product)
+        //{
+        //    await _context.Products.AddAsync(product);
+        //    await SaveChangesAsync();
+        //}
 
-        public async Task UpdateAsync(Product product)
-        {
-            _context.Products.Update(product);
-            await SaveChangesAsync();
-        }
+        //public async Task UpdateAsync(Product product)
+        //{
+        //    _context.Products.Update(product);
+        //    await SaveChangesAsync();
+        //}
 
-        public async Task DeleteAsync(Product product)
-        {
-            _context.Products.Remove(product);
-            await SaveChangesAsync();
-        }
+        //public async Task DeleteAsync(Product product)
+        //{
+        //    _context.Products.Remove(product);
+        //    await SaveChangesAsync();
+        //}
 
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
+        //public async Task SaveChangesAsync()
+        //{
+        //    await _context.SaveChangesAsync();
+        //}
     }
 } 
