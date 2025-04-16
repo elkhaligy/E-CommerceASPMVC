@@ -2,12 +2,8 @@
 
 namespace Project.Contract
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IRepository<Category>
     {
-        Task<Category?> GetByIdAsync(int id);
-        Task<IEnumerable<Category>> GetAllAsync();
-        Task AddAsync(Category category);
-        Task UpdateAsync(Category category);
-        Task DeleteAsync(Category category);
+
     }
 }

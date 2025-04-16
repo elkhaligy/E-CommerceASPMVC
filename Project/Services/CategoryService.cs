@@ -34,7 +34,8 @@ namespace Project.Services
                 throw new InvalidOperationException($"A category with name '{category.Name}' already exists");
             }
 
-            await _categoryRepository.AddAsync(category);
+            _categoryRepository.Add(category);
+            await _categoryRepository.SaveChangesAsync();
         }
 
         public async Task UpdateCategoryAsync(Category category)
@@ -58,7 +59,8 @@ namespace Project.Services
                 throw new InvalidOperationException($"A category with name '{category.Name}' already exists");
             }
 
-            await _categoryRepository.UpdateAsync(category);
+            _categoryRepository.Update(category);
+            await _categoryRepository.SaveChangesAsync();
         }
 
         public async Task DeleteCategoryAsync(int id)
@@ -75,7 +77,8 @@ namespace Project.Services
                 throw new InvalidOperationException("Cannot delete category that has products");
             }
 
-            await _categoryRepository.DeleteAsync(category);
+            _categoryRepository.Delete(category);
+            await _categoryRepository.SaveChangesAsync();
         }
 
         public async Task<bool> CategoryExistsAsync(int id)

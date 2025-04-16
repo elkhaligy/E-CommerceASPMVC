@@ -1,4 +1,5 @@
 ﻿using Project.DTO;
+using Project.Models;
 
 namespace Project.ViewModel
 {

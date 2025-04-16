@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Project.Contract;
-using Project.Data;
 using Project.Repositories;
 using Project.Services;
 
