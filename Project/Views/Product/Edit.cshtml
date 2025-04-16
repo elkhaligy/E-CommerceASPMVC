@@ -43,6 +43,15 @@
                     <span asp-validation-for="Product.BrandId" class="text-danger"></span>
                 </div>
 
+               <div class="form-group">
+                    <label asp-for="Product.AdminId" class="control-label">Admin</label>
+                    <select asp-for="Product.AdminId" class="form-control" 
+                            asp-items="@(new SelectList(Model.Admins, "Id", "Email"))">
+                        <option value="">-- Select Admin --</option>
+                    </select>
+                    <span asp-validation-for="Product.AdminId" class="text-danger"></span>
+                </div>
+
                 <div class="form-group">
                     <label class="control-label">Current Images</label>
                     <div class="row">

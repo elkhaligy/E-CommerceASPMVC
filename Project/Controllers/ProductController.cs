@@ -10,19 +10,22 @@ namespace Project.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
-        private readonly ICategoryService _categoryService;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly IBrandService _brandService;
+        private readonly IAdminRepository _adminRepository;
         private readonly ApplicationContext _context;
 
         public ProductController(
             IProductService productService,
-            ICategoryService categoryService,
+            ICategoryRepository categoryRepository,
             IBrandService brandService,
+            IAdminRepository adminRepository,
             ApplicationContext context)
         {
             _productService = productService;
-            _categoryService = categoryService;
+            _categoryRepository = categoryRepository;
             _brandService = brandService;
+            _adminRepository = adminRepository;
             _context = context;
         }
 
@@ -56,8 +59,9 @@ namespace Project.Controllers
         {
             var viewModel = new CreateProductViewModel
             {
-                Categories = await _categoryService.GetAllCategoriesAsync(),
-                Brands = await _brandService.GetAllBrandsAsync()
+                Categories = await _categoryRepository.GetAllAsync(),
+                Brands = await _brandService.GetAllBrandsAsync(),
+                Admins = await _adminRepository.GetAllAsync()
             };
             return View(viewModel);
         }
@@ -72,8 +76,9 @@ namespace Project.Controllers
                 var viewModel = new CreateProductViewModel
                 {
                     Product = product,
-                    Categories = await _categoryService.GetAllCategoriesAsync(),
-                    Brands = await _brandService.GetAllBrandsAsync()
+                    Categories = await _categoryRepository.GetAllAsync(),
+                    Brands = await _brandService.GetAllBrandsAsync(),
+                    Admins = await _adminRepository.GetAllAsync()
                 };
                 return View(viewModel);
             }
@@ -86,13 +91,13 @@ namespace Project.Controllers
                     var viewModel = new CreateProductViewModel
                     {
                         Product = product,
-                        Categories = await _categoryService.GetAllCategoriesAsync(),
-                        Brands = await _brandService.GetAllBrandsAsync()
+                        Categories = await _categoryRepository.GetAllAsync(),
+                        Brands = await _brandService.GetAllBrandsAsync(),
+                        Admins = await _adminRepository.GetAllAsync()
                     };
                     return View(viewModel);
                 }
 
-                product.AdminId = 1; // Assuming the admin ID is 1 for this example
                 await _productService.AddProductAsync(product);
 
                 // Handle image uploads
@@ -119,8 +124,9 @@ namespace Project.Controllers
                 var viewModel = new CreateProductViewModel
                 {
                     Product = product,
-                    Categories = await _categoryService.GetAllCategoriesAsync(),
-                    Brands = await _brandService.GetAllBrandsAsync()
+                    Categories = await _categoryRepository.GetAllAsync(),
+                    Brands = await _brandService.GetAllBrandsAsync(),
+                    Admins = await _adminRepository.GetAllAsync()
                 };
                 return View(viewModel);
             }
@@ -138,8 +144,9 @@ namespace Project.Controllers
             var viewModel = new EditProductViewModel
             {
                 Product = product,
-                Categories = await _categoryService.GetAllCategoriesAsync(),
-                Brands = await _brandService.GetAllBrandsAsync()
+                Categories = await _categoryRepository.GetAllAsync(),
+                Brands = await _brandService.GetAllBrandsAsync(),
+                Admins = await _adminRepository.GetAllAsync()
             };
             return View(viewModel);
         }
@@ -159,8 +166,9 @@ namespace Project.Controllers
                 var viewModel = new EditProductViewModel
                 {
                     Product = product,
-                    Categories = await _categoryService.GetAllCategoriesAsync(),
-                    Brands = await _brandService.GetAllBrandsAsync()
+                    Categories = await _categoryRepository.GetAllAsync(),
+                    Brands = await _brandService.GetAllBrandsAsync(),
+                    Admins = await _adminRepository.GetAllAsync()
                 };
                 return View(viewModel);
             }
@@ -218,8 +226,9 @@ namespace Project.Controllers
                 var viewModel = new EditProductViewModel
                 {
                     Product = product,
-                    Categories = await _categoryService.GetAllCategoriesAsync(),
-                    Brands = await _brandService.GetAllBrandsAsync()
+                    Categories = await _categoryRepository.GetAllAsync(),
+                    Brands = await _brandService.GetAllBrandsAsync(),
+                    Admins = await _adminRepository.GetAllAsync()
                 };
                 return View(viewModel);
             }
