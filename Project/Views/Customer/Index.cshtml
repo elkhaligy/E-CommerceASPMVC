@@ -1,0 +1,61 @@
+@model IEnumerable<Project.ViewModel.CustomerViewModel>
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Customers</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Create New Customer
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in Model)
+                {
+                    <tr>
+                        <td>@customer.FirstName </td>
+                        <td>@customer.LastName</td>
+                        <td>@customer.Email</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a asp-action="Details" asp-route-id="@customer.Id" 
+                                   class="btn btn-sm btn-info" title="Details">
+                                   Details
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@customer.Id" 
+                                   class="btn btn-sm btn-warning" title="Edit">
+                                   Edit
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@customer.Id" 
+                                   class="btn btn-sm btn-danger" title="Delete">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <p class="mb-0">No customers found. Click "Create New Customer" to add one.</p>
+        </div>
+    }
+</div>
+

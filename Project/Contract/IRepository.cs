@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using System.CodeDom;
 
-namespace Project.Repositories
+namespace Project.Contract
 {
     public interface IRepository<TEntity> where TEntity : class
     {

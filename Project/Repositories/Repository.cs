@@ -1,5 +1,5 @@
-
 using Microsoft.EntityFrameworkCore;
+using Project.Contract;
 
 namespace Project.Repositories
 {

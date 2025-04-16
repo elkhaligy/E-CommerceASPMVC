@@ -22,6 +22,8 @@ namespace Project
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IBrandService, BrandService>();
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+            builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+            builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
             var app = builder.Build();
 
@@ -42,7 +44,7 @@ namespace Project
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Product}/{action=Index}/{id?}");
 
             app.Run();
         }

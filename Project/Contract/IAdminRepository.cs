@@ -1,6 +1,9 @@
-﻿namespace Project.Contract
+﻿using Project.Models;
+
+namespace Project.Contract
 {
-    public interface IAdminRepository
+    public interface IAdminRepository : IRepository<Admin>
     {
+        Task<Admin?> GetByEmailAsync(string email);
     }
 }
