@@ -78,7 +78,29 @@ namespace Project.Repositories
                 .Where(p => p.Name.Contains(name))
                 .ToListAsync();
         }
-
+        public async Task<IEnumerable<Product>?> FilterByCategoryAndBrandAsync(int? categoryId, int? brandId)
+        {
+            if (categoryId == null && brandId == null)
+            {
+                return await _dbSet.ToListAsync();
+            }
+            else if (categoryId != null && brandId == null)
+            {
+                return await _dbSet.Where(product => product.CategoryId == categoryId)
+                    .ToListAsync();
+            }
+            else if (categoryId == null && brandId != null)
+            {
+                return await _dbSet.Where(product => product.BrandId == brandId)
+                    .ToListAsync();
+            }
+            else
+            {
+                return await _dbSet.Where(product => product.CategoryId == categoryId && product.BrandId == brandId)
+                    .ToListAsync();
+            }
+        }
+        
         //public async Task AddAsync(Product product)
         //{
         //    await _context.Products.AddAsync(product);

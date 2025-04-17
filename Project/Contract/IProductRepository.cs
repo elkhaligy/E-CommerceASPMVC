@@ -10,5 +10,6 @@ namespace Project.Contract
         Task<IEnumerable<Product>?> GetByBrandIdAsync(int brandId);
         Task<IEnumerable<Product>?> GetByAdminIdAsync(int adminId);
         Task<IEnumerable<Product>?> SearchByNameAsync(string name);
+        Task<IEnumerable<Product>?> FilterByCategoryAndBrandAsync(int? categoryId, int? brandId);
     }
 }

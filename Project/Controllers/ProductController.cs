@@ -33,7 +33,15 @@ namespace Project.Controllers
         public async Task<IActionResult> Index()
         {
             var products = await _productRepository.GetAllAsync();
-            return View(products);
+            var categories = await _categoryRepository.GetAllAsync();
+            var brands = await _brandRepository.GetAllAsync();
+            var viewModel = new ProductViewModel
+            {
+                Products = products,
+            Categories = categories,
+                Brands = brands
+            };
+            return View(viewModel);
         }
 
         // GET: Product/Details/5
@@ -286,7 +294,29 @@ namespace Project.Controllers
 
             var products = await _productRepository.SearchByNameAsync(searchTerm);
             ViewBag.SearchTerm = searchTerm;
-            return View("Index", products);
+            var viewMode = new ProductViewModel
+            {
+                Products = products,
+                Categories = await _categoryRepository.GetAllAsync(),
+                Brands = await _brandRepository.GetAllAsync(),
+            };
+
+            return View("Index", viewMode);
+        }
+
+        // GET: Product/Filter
+        public async Task<IActionResult> Filter(int? categoryId, int? brandId)
+        {
+            var products = await _productRepository.FilterByCategoryAndBrandAsync(categoryId, brandId);
+            var viewMode = new ProductViewModel
+            {
+                Products = products,
+                Categories = await _categoryRepository.GetAllAsync(),
+                Brands = await _brandRepository.GetAllAsync(),
+                SelectedCategoryId = categoryId,
+                SelectedBrandId = brandId
+            };
+            return View("Index", viewMode);
         }
     }
 }
