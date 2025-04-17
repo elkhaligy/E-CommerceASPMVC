@@ -1,7 +1,10 @@
-﻿public class Brand
+﻿namespace Project.Models
 {
-    public int BrandId { get; set; }
-    public required string Name { get; set; }
+    public class Brand
+    {
+        public int BrandId { get; set; }
+        public required string Name { get; set; }
 
-    public virtual ICollection<Product>? Products { get; set; }
+        public virtual ICollection<Product>? Products { get; set; }
+    }
 }
