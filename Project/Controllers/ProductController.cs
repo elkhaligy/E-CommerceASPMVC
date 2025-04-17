@@ -129,7 +129,7 @@ namespace Project.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "An error occurred while creating the product. Please try again.");
+                ModelState.AddModelError("", $"An error occurred while creating the product. Please try again. {ex.Message}");
                 var viewModel = new CreateProductViewModel
                 {
                     Product = product,
@@ -232,7 +232,7 @@ namespace Project.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "An error occurred while updating the product. Please try again.");
+                ModelState.AddModelError("", $"An error occurred while updating the product. Please try again. {ex.Message} ");
                 var viewModel = new EditProductViewModel
                 {
                     Product = product,
@@ -279,7 +279,7 @@ namespace Project.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while deleting the product.";
+                TempData["ErrorMessage"] = $"An error occurred while deleting the product. Please try again. {ex.Message}";
                 return RedirectToAction(nameof(Index));
             }
         }

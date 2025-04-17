@@ -99,7 +99,7 @@ namespace Project.Controllers
             }
             catch (Exception ex)
             {
-                TempData["DeletedFailureMessage"] = "An error occurred while deleting the brand. Please try again.";
+                TempData["DeletedFailureMessage"] = $"An error occurred while deleting the brand. Please try again. {ex.Message}";
                 return RedirectToAction(nameof(Index));
 
             }
