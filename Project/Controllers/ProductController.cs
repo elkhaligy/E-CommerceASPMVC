@@ -9,22 +9,22 @@ namespace Project.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductService _productService;
+        private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IBrandService _brandService;
+        private readonly IBrandRepository _brandRepository;
         private readonly IAdminRepository _adminRepository;
         private readonly ApplicationContext _context;
 
         public ProductController(
-            IProductService productService,
+            IProductRepository productRepository,
             ICategoryRepository categoryRepository,
-            IBrandService brandService,
+            IBrandRepository brandRepository,
             IAdminRepository adminRepository,
             ApplicationContext context)
         {
-            _productService = productService;
+            _productRepository = productRepository;
             _categoryRepository = categoryRepository;
-            _brandService = brandService;
+            _brandRepository = brandRepository;
             _adminRepository = adminRepository;
             _context = context;
         }
@@ -32,7 +32,7 @@ namespace Project.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var products = await _productService.GetAllProductsAsync();
+            var products = await _productRepository.GetAllAsync();
             return View(products);
         }
 
@@ -41,7 +41,7 @@ namespace Project.Controllers
         {
             try
             {
-                var product = await _productService.GetProductByIdAsync(id);
+                var product = await _productRepository.GetByIdAsync(id);
                 if (product == null)
                 {
                     return NotFound();
@@ -60,7 +60,7 @@ namespace Project.Controllers
             var viewModel = new CreateProductViewModel
             {
                 Categories = await _categoryRepository.GetAllAsync(),
-                Brands = await _brandService.GetAllBrandsAsync(),
+                Brands = await _brandRepository.GetAllAsync(),
                 Admins = await _adminRepository.GetAllAsync()
             };
             return View(viewModel);
@@ -77,7 +77,7 @@ namespace Project.Controllers
                 {
                     Product = product,
                     Categories = await _categoryRepository.GetAllAsync(),
-                    Brands = await _brandService.GetAllBrandsAsync(),
+                    Brands = await _brandRepository.GetAllAsync(),
                     Admins = await _adminRepository.GetAllAsync()
                 };
                 return View(viewModel);
@@ -92,13 +92,14 @@ namespace Project.Controllers
                     {
                         Product = product,
                         Categories = await _categoryRepository.GetAllAsync(),
-                        Brands = await _brandService.GetAllBrandsAsync(),
+                        Brands = await _brandRepository.GetAllAsync(),
                         Admins = await _adminRepository.GetAllAsync()
                     };
                     return View(viewModel);
                 }
 
-                await _productService.AddProductAsync(product);
+                _productRepository.Add(product);
+                await _productRepository.SaveChangesAsync();    
 
                 // Handle image uploads
                 foreach (var file in product.ImageFiles)
@@ -125,7 +126,7 @@ namespace Project.Controllers
                 {
                     Product = product,
                     Categories = await _categoryRepository.GetAllAsync(),
-                    Brands = await _brandService.GetAllBrandsAsync(),
+                    Brands = await _brandRepository.GetAllAsync(),
                     Admins = await _adminRepository.GetAllAsync()
                 };
                 return View(viewModel);
@@ -135,7 +136,7 @@ namespace Project.Controllers
         // GET: Product/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
+            var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -145,7 +146,7 @@ namespace Project.Controllers
             {
                 Product = product,
                 Categories = await _categoryRepository.GetAllAsync(),
-                Brands = await _brandService.GetAllBrandsAsync(),
+                Brands = await _brandRepository.GetAllAsync(),
                 Admins = await _adminRepository.GetAllAsync()
             };
             return View(viewModel);
@@ -167,7 +168,7 @@ namespace Project.Controllers
                 {
                     Product = product,
                     Categories = await _categoryRepository.GetAllAsync(),
-                    Brands = await _brandService.GetAllBrandsAsync(),
+                    Brands = await _brandRepository.GetAllAsync(),
                     Admins = await _adminRepository.GetAllAsync()
                 };
                 return View(viewModel);
@@ -175,7 +176,8 @@ namespace Project.Controllers
 
             try
             {
-                await _productService.UpdateProductAsync(product);
+                _productRepository.Update(product);
+                await _productRepository.SaveChangesAsync();
                 // Handle images to delete
                 // Check first if the image to delete list has data
                 // iterate through it, you will find the image id
@@ -227,7 +229,7 @@ namespace Project.Controllers
                 {
                     Product = product,
                     Categories = await _categoryRepository.GetAllAsync(),
-                    Brands = await _brandService.GetAllBrandsAsync(),
+                    Brands = await _brandRepository.GetAllAsync(),
                     Admins = await _adminRepository.GetAllAsync()
                 };
                 return View(viewModel);
@@ -237,7 +239,7 @@ namespace Project.Controllers
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
+            var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -252,12 +254,13 @@ namespace Project.Controllers
         {
             try
             {
-                var product = await _productService.GetProductByIdAsync(id);
+                var product = await _productRepository.GetByIdAsync(id);
                 if (product == null)
                 {
                     return NotFound();
                 }
-                await _productService.DeleteProductAsync(product);
+                _productRepository.Delete(product);
+                await _productRepository.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Product deleted successfully";
                 return RedirectToAction(nameof(Index));
             }
@@ -281,7 +284,7 @@ namespace Project.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var products = await _productService.SearchProductsByNameAsync(searchTerm);
+            var products = await _productRepository.SearchByNameAsync(searchTerm);
             ViewBag.SearchTerm = searchTerm;
             return View("Index", products);
         }
