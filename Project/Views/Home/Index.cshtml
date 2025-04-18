@@ -1,6 +1,17 @@
 ﻿@{
-    Layout = "_LayoutCustom";
+    Layout = "_LayoutTemplate";
     ViewData["Title"] = "Home Page";
 }
 
 
+@await Html.PartialAsync("Partials/_Hero")
+
+@await Html.PartialAsync("Partials/_TrendingProducts")
+
+@await Html.PartialAsync("Partials/_CallAction")
+
+@await Html.PartialAsync("Partials/_Banner")
+
+@await Html.PartialAsync("Partials/_ShippingInfo")
+
+ 

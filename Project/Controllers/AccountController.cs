@@ -5,9 +5,12 @@ namespace Project.Controllers
     public class AccountController : Controller
     {
         [HttpGet]
-        public IActionResult Login(string? returnUrl = null)
+        public IActionResult Login()
         {
-            System.Console.WriteLine(returnUrl);
+            return View();
+        }
+        public IActionResult Register()
+        {
             return View();
         }
 
