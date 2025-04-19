@@ -41,7 +41,7 @@ namespace Project.Controllers
             var existingCustomer = await _customerRepo.GetByEmailAsync(model.Email);
             if (existingCustomer != null)
             {
-                ModelState.AddModelError("Email", "Email already exists");
+                ModelState.AddModelError("", "Email already exists");
                 return View(model);
             }
 
@@ -49,7 +49,7 @@ namespace Project.Controllers
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                Email = model.Email,
+                Email = model.Email.ToLower(),
                 PhoneNumber = model.PhoneNumber,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
@@ -73,9 +73,10 @@ namespace Project.Controllers
             var customer = await _customerRepo.GetByEmailAsync(model.Email);
             if (customer == null)
             {
-                ModelState.AddModelError("Email", "Invalid email or password");
+                ModelState.AddModelError("", "User Doesn't Exist");
                 return View(model);
             }
+
             var verificationResult = _passwordHasher.VerifyHashedPassword(customer, customer.PasswordHash!, model.Password);
 
             if (verificationResult == PasswordVerificationResult.Success)
@@ -102,7 +103,6 @@ namespace Project.Controllers
             }
             else
             {
-                // Strange bug here
                 ModelState.AddModelError("", "Invalid email or password");
                 return View(model);
             }
