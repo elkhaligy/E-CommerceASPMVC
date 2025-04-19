@@ -1,4 +1,4 @@
-
+@model LoginViewModel
 @{
     Layout = "_LayoutTemplate";
     ViewData["Title"] = "Login";
@@ -30,7 +30,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
-                    <form class="card login-form" method="post">
+                    <form asp-action="Login" class="card login-form" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
                         <div class="card-body">
                             <div class="title">
                                 <h3>Login Now</h3>
@@ -53,23 +55,27 @@
                                 <span>Or</span>
                             </div>
                             <div class="form-group input-group">
-                                <label for="reg-fn">Email</label>
-                                <input class="form-control" type="email" id="reg-email" required>
+                                <label asp-for="Email" for="reg-fn">Email</label>
+                                <input asp-for="Email" class="form-control" type="text" id="reg-email" required>
+                                <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                             <div class="form-group input-group">
-                                <label for="reg-fn">Password</label>
-                                <input class="form-control" type="password" id="reg-pass" required>
+                                <label asp-for="Password" for="reg-fn">Password</label>
+                                <input asp-for="Password" class="form-control" type="password" id="reg-pass" required>
+                                <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="d-flex flex-wrap justify-content-between bottom-content">
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input width-auto" id="exampleCheck1">
+                                    <input asp-for="RememberMe" type="checkbox" class="form-check-input width-auto" id="exampleCheck1">
                                     <label class="form-check-label">Remember me</label>
+                                    <span asp-validation-for="RememberMe" class="text-danger"></span>
                                 </div>
                                 <a class="lost-pass" href="account-password-recovery.html">Forgot password?</a>
                             </div>
                             <div class="button">
                                 <button class="btn" type="submit">Login</button>
                             </div>
+
                             <p class="outer-link">Don't have an account? <a asp-controller="Account" asp-action="Register">Register here </a>
                             </p>
                         </div>
@@ -79,3 +85,10 @@
         </div>
     </div>
     <!-- End Account Login Area -->
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

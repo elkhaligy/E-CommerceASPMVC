@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project.Contract;
+using Project.Models;
 using Project.Repositories;
 using Project.Services;
 
@@ -23,7 +26,19 @@ namespace Project
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
             builder.Services.AddScoped<IAdminRepository, AdminRepository>();
             builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+            builder.Services.AddScoped<IPasswordHasher<Customer>, PasswordHasher<Customer>>();
 
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    // Set default expiration time for cookies
+                    options.Cookie.Name = "AuthCookie";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);  // Default session expiration
+                    options.SlidingExpiration = true;
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Only over HTTPS
+                });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

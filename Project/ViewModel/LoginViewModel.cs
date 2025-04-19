@@ -6,7 +6,7 @@ namespace Project.ViewModel
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Invalid email address format")]
         public required string Email { get; set; }
         
         [Required]

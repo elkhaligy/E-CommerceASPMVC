@@ -1,3 +1,4 @@
+@model RegisterViewModel
 @{
     Layout = "_LayoutTemplate";
     ViewData["Title"] = "Register";
@@ -37,41 +38,48 @@
                             <h3>No Account? Register</h3>
                             <p>Registration takes less than a minute but gives you full control over your orders.</p>
                         </div>
-                        <form class="row" method="post">
+                        <form asp-action="Register" class="row" method="post">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="reg-fn">First Name</label>
-                                    <input class="form-control" type="text" id="reg-fn" required>
+                                    <label asp-for="FirstName" >First Name</label>
+                                    <input asp-for="FirstName" class="form-control" type="text" id="reg-fn" required>
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="reg-ln">Last Name</label>
-                                    <input class="form-control" type="text" id="reg-ln" required>
+                                    <label asp-for="LastName" for="reg-ln">Last Name</label>
+                                    <input asp-for="LastName" class="form-control" type="text" id="reg-ln" required>
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="reg-email">E-mail Address</label>
-                                    <input class="form-control" type="email" id="reg-email" required>
+                                    <label asp-for="Email" for="reg-email">E-mail Address</label>
+                                    <input asp-for="Email" class="form-control" type="email" id="reg-email" required>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="reg-phone">Phone Number</label>
-                                    <input class="form-control" type="text" id="reg-phone" required>
+                                    <label asp-for="PhoneNumber" for="reg-phone">Phone Number</label>
+                                    <input asp-for="PhoneNumber" class="form-control" type="text" id="reg-phone" required>
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="reg-pass">Password</label>
-                                    <input class="form-control" type="password" id="reg-pass" required>
+                                    <label asp-for="Password" for="reg-pass">Password</label>
+                                    <input asp-for="Password" class="form-control" type="password" id="reg-pass" required>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="reg-pass-confirm">Confirm Password</label>
-                                    <input class="form-control" type="password" id="reg-pass-confirm" required>
+                                    <label asp-for="ConfirmPassword" for="reg-pass-confirm">Confirm Password</label>
+                                    <input asp-for="ConfirmPassword" class="form-control" type="password" id="reg-pass-confirm" required>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="button">
@@ -87,3 +95,6 @@
     </div>
     <!-- End Account Register Area -->
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

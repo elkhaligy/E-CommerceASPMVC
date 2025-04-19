@@ -1,3 +1,6 @@
+@using System.Security.Claims
+
+
  <header class="header navbar-area">
         <!-- Start Topbar -->
         <div class="topbar">
@@ -47,15 +50,31 @@
                         <div class="top-end">
                             <div class="user">
                                 <i class="lni lni-user"></i>
-                                Hello
+                                     @if (User?.Identity?.IsAuthenticated ?? false)
+                                    {
+                                        <span>@User.FindFirst(ClaimTypes.GivenName)?.Value</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Guest</span>
+                                    }
                             </div>
                             <ul class="user-login">
-                                <li>
-                                    <a asp-controller="Account" asp-action="Login">Sign In</a>
-                                </li>
-                                <li>
-                                    <a asp-controller="Account" asp-action="Register">Register</a>
-                                </li>
+                                @if (!User?.Identity?.IsAuthenticated ?? false) // User is not authenticated
+                                {
+                                    <li>
+                                        <a asp-controller="Account" asp-action="Login">Sign In</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Account" asp-action="Register">Register</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a asp-controller="Account" asp-action="Logout">Logout</a>
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </div>
@@ -69,7 +88,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3 col-7">
                         <!-- Start Header Logo -->
-                        <a class="navbar-brand" href="index.html">
+                        <a class="navbar-brand" asp-controller="Home" asp-action="Index">
                             <img src="/Template/assets/images/logo/logo.svg" alt="Logo">
                         </a>
                         <!-- End Header Logo -->
