@@ -43,7 +43,19 @@ namespace Project.Controllers
             };
             return View(viewModel);
         }
-
+        public async Task<IActionResult> GridView()
+        {
+            var products = await _productRepository.GetAllAsync();
+            var categories = await _categoryRepository.GetAllAsync();
+            var brands = await _brandRepository.GetAllAsync();
+            var viewModel = new ProductViewModel
+            {
+                Products = products,
+            Categories = categories,
+                Brands = brands
+            };
+            return View(viewModel);
+        }
         // GET: Product/Details/5
         public async Task<IActionResult> Details(int id)
         {
