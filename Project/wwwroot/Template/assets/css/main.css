@@ -55,6 +55,7 @@ button:focus,
 
 select {
   -webkit-writing-mode: horizontal-tb !important;
+  writing-mode: horizontal-tb !important;
   text-rendering: auto;
   color: #081828;
   letter-spacing: normal;

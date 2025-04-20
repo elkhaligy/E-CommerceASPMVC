@@ -212,7 +212,7 @@
                                             <div class="single-product" style="height: 420px;" >
                                                 <div class="product-image">
                                                     @* <img  src="data:image/jpeg;base64,@Convert.ToBase64String(product.Images.First().ImageData) alt="#"> *@
-                                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(product.Images.First().ImageData)"
+                                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(product.Images!.First().ImageData)"
                             class="card-img-top " alt="@product.Name" style="height: 200px; width:500px ; object-fit:contain ;">
                                                     <div class="button">
                                                         <a href="product-details.html" class="btn"><i
@@ -220,7 +220,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-info">
-                                                    <span class="category" >@product.Category.Name</span>
+                                                    <span class="category" >@product.Category!.Name</span>
                                                     <h4 class="title">
                                                         <a asp-action="Details" asp-route-id="@product.ProductId" >@product.Name</a>
                                                     </h4>
@@ -270,7 +270,7 @@
                                                 <div class="row align-items-center">
                                                     <div class="col-lg-4 col-md-4 col-12">
                                                         <div class="product-image">
-                                                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(product.Images.First().ImageData)"
+                                                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(product.Images!.First().ImageData)"
                                                             class="card-img-top " alt="@product.Name" style="height: 200px; width:500px ; object-fit:contain ;">
                                                             @* <span class="sale-tag">-50%</span> *@
                                                             <div class="button">
@@ -281,7 +281,7 @@
                                                     </div>
                                                     <div class="col-lg-8 col-md-8 col-12">
                                                         <div class="product-info">
-                                                            <span class="category">@product.Category.Name</span>
+                                                            <span class="category">@product.Category!.Name</span>
                                                             <h4 class="title">
                                                                 <a href="product-grids.html">@product.Name</a>
                                                             </h4>

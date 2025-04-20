@@ -55,7 +55,7 @@
                 <div class="form-group">
                     <label class="control-label">Current Images</label>
                     <div class="row">
-                        @if (Model.Product.Images?.Any() == true)
+                        @if (Model.Product!.Images?.Any() == true)
                         {
                             @for (int i = 0; i < Model.Product.Images.Count(); i++)
                             {

@@ -114,11 +114,11 @@
                             <main id="gallery">
                                 <div class="main-img">
                                     @* <img src="/Template/assets/images/product-details/01.jpg" id="current" alt="#"> *@
-                                      <img src="data:image/jpeg;base64,@Convert.ToBase64String(@Model.Images.First().ImageData)" id="current" alt="@Model.Name" style="max-height: 350px; object-fit:contain;">
+                                      <img src="data:image/jpeg;base64,@Convert.ToBase64String(@Model.Images!.First().ImageData)" id="current" alt="@Model.Name" style="max-height: 350px; object-fit:contain;">
                                 </div>
                                 <div class="images">
                                     @* Here I need to loop trhough the product images and make an element for each of them that has  the class img *@
-                                    @foreach (var image in Model.Images)
+                                    @foreach (var image in Model.Images!)
                                     {
                                         <img src="data:image/jpeg;base64,@Convert.ToBase64String(image.ImageData)" class="img" alt="@Model.Name">
                                     }
@@ -134,7 +134,7 @@
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
                             <h2 class="title">@Model.Name</h2>
-                            <p class="category"><i class="lni lni-tag"></i> <a href="javascript:void(0)">@Model.Category.Name</a></p>
+                            <p class="category"><i class="lni lni-tag"></i> <a href="javascript:void(0)">@Model.Category!.Name</a></p>
                             <h3 class="price">@Model.Price EGP</h3>
                             <p class="info-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                                 tempor incididunt
