@@ -222,7 +222,7 @@
                                                 <div class="product-info">
                                                     <span class="category" >@product.Category.Name</span>
                                                     <h4 class="title">
-                                                        <a href="product-grids.html" >@product.Name</a>
+                                                        <a asp-action="Details" asp-route-id="@product.ProductId" >@product.Name</a>
                                                     </h4>
                                                     <ul class="review">
                                                         <li><i class="lni lni-star-filled"></i></li>
