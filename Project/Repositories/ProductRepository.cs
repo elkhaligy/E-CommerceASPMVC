@@ -69,12 +69,12 @@ namespace Project.Repositories
         }
 
         public async Task<IEnumerable<Product>?> SearchByNameAsync(string name)
-        {
+        {   
+            if (String.IsNullOrWhiteSpace(name))
+            {
+                return await _dbSet.ToListAsync();
+            }
             return await _dbSet
-                .Include(p => p.Category)
-                .Include(p => p.Brand)
-                .Include(p => p.Admin)
-                .Include(p => p.Images)
                 .Where(p => p.Name.Contains(name))
                 .ToListAsync();
         }

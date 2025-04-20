@@ -1,5 +1,7 @@
 @using System.Security.Claims
-
+@{
+    var searchTerm = ViewBag.SearchTerm;
+}
 
  <header class="header navbar-area">
         <!-- Start Topbar -->
@@ -110,12 +112,14 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="search-input">
-                                    <input type="text" placeholder="Search">
-                                </div>
-                                <div class="search-btn">
-                                    <button><i class="lni lni-search-alt"></i></button>
-                                </div>
+                                <form class="search-form" method="GET" asp-controller="Product" asp-action="Search" style="display: flex; width: 100%;">
+                                    <div class="search-input" style="flex: 1;">
+                                        <input type="text" id="searchInput" value="@searchTerm"  name="searchTerm" placeholder="Search" style="width: 100%;">
+                                    </div>
+                                    <div class="search-btn">
+                                        <button type="submit" id="searchButton"><i class="lni lni-search-alt"></i></button>
+                                    </div>
+                                </form>
                             </div>
                             <!-- navbar search Ends -->
                         </div>
@@ -223,7 +227,7 @@
                                 <li><a href="product-grids.html">top 100 offer</a></li>
                                 <li><a href="product-grids.html">sunglass</a></li>
                                 <li><a href="product-grids.html">watch</a></li>
-                                <li><a href="product-grids.html">man’s product</a></li>
+                                <li><a href="product-grids.html">man's product</a></li>
                                 <li><a href="product-grids.html">Home Audio & Theater</a></li>
                                 <li><a href="product-grids.html">Computers & Tablets </a></li>
                                 <li><a href="product-grids.html">Video Games </a></li>
@@ -317,3 +321,4 @@
         <!-- End Header Bottom -->
     </header>
     <!-- End Header Area -->
+

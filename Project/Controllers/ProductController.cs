@@ -303,10 +303,6 @@ namespace Project.Controllers
         // GET: Product/Search
         public async Task<IActionResult> Search(string searchTerm)
         {
-            if (string.IsNullOrWhiteSpace(searchTerm))
-            {
-                return RedirectToAction(nameof(Index));
-            }
 
             var products = await _productRepository.SearchByNameAsync(searchTerm);
             ViewBag.SearchTerm = searchTerm;
@@ -316,8 +312,7 @@ namespace Project.Controllers
                 Categories = await _categoryRepository.GetAllAsync(),
                 Brands = await _brandRepository.GetAllAsync(),
             };
-
-            return View("Index", viewMode);
+            return View("GridView", viewMode);
         }
 
         // GET: Product/Filter
