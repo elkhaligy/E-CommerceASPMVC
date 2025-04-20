@@ -59,12 +59,16 @@ namespace Project.Controllers
         // GET: Product/Details/5
         public async Task<IActionResult> Details(int id)
         {
+            // I want to return the nice details page that will contain the product details and the images
+            // So I need first to make the product details chtml page and make it take a model
+            // the model it will take is actually the product itself
+            // from there we the all the product details we will need 
             try
             {
                 var product = await _productRepository.GetByIdAsync(id);
                 if (product == null)
                 {
-                    return NotFound();
+                    return View("NotFound404");
                 }
                 return View(product);
             }
