@@ -22,6 +22,7 @@ namespace Project.Controllers
                 FirstName = a.FirstName,
                 LastName = a.LastName,
                 Email = a.Email,
+              
             });
 
             return View(viewModels);
@@ -31,7 +32,28 @@ namespace Project.Controllers
         {
             return View("Sign-in");
         }
-     
+        [HttpPost]
+        public async Task<IActionResult> SignIn(AdminLoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View("Sign-in", model);
+
+            var admin = await _adminRepository.GetByEmailAsync(model.Email);
+
+            if (admin == null || admin.Password != model.Password)
+            {
+                ModelState.AddModelError("", "Invalid email or password");
+                return View("Sign-in", model);
+            }
+
+            // Set session
+            HttpContext.Session.SetInt32("AdminId", admin.Id);
+            HttpContext.Session.SetString("AdminEmail", admin.Email);
+            Console.WriteLine(HttpContext.Session.Id);
+            return RedirectToAction("Index");
+        }
+
+
 
 
     }
