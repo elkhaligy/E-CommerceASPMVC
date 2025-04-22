@@ -26,3 +26,5 @@ ehthumbs.db
 
 
 /Project/appsettings.json
+
+/Project/appsettings.Development.json
