@@ -26,6 +26,12 @@ namespace Project.Controllers
 
             return View(viewModels);
         }
+        // GET: Admin/SignIn 
+        public async Task<IActionResult> signIn()
+        {
+            return View("Sign-in");
+        }
+     
 
 
     }
