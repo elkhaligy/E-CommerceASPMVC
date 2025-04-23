@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project.Contract;
 using Project.DTO;
 using Project.Models;
@@ -77,7 +78,7 @@ namespace Project.Controllers
                 return NotFound();
             }
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Product/Create
         public async Task<IActionResult> Create()
         {
@@ -89,7 +90,7 @@ namespace Project.Controllers
             };
             return View(viewModel);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -156,7 +157,7 @@ namespace Project.Controllers
                 return View(viewModel);
             }
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Product/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
@@ -175,7 +176,7 @@ namespace Project.Controllers
             };
             return View(viewModel);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -259,7 +260,7 @@ namespace Project.Controllers
                 return View(viewModel);
             }
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
@@ -270,7 +271,7 @@ namespace Project.Controllers
             }
             return View(product);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Product/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
