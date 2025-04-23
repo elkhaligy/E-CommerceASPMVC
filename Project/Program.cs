@@ -47,6 +47,8 @@ namespace Project
                     options.SlidingExpiration = true;
                     options.Cookie.HttpOnly = true;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Only over HTTPS
+                    options.LoginPath = "/Admin/SignIn";
+                    options.AccessDeniedPath = "/Home/Forbidden";
                 });
             var app = builder.Build();
 

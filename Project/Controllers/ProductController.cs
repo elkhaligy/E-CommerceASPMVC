@@ -5,7 +5,7 @@ using Project.DTO;
 using Project.Models;
 using Project.Services;
 using Project.ViewModel;
-using YourNamespace.Filters;
+
 
 namespace Project.Controllers
 {
@@ -30,7 +30,7 @@ namespace Project.Controllers
             _adminRepository = adminRepository;
             _context = context;
         }
-        [AdminAuthorize]
+        [Authorize(Roles = "Admin")]
         // GET: Product
         public async Task<IActionResult> Index()
         {
@@ -79,7 +79,7 @@ namespace Project.Controllers
                 return NotFound();
             }
         }
-        [AdminAuthorize]
+        [Authorize(Roles = "Admin")]
         // GET: Product/Create
         public async Task<IActionResult> Create()
         {
@@ -91,7 +91,7 @@ namespace Project.Controllers
             };
             return View(viewModel);
         }
-        [AdminAuthorize]
+        [Authorize(Roles = "Admin")]
         // POST: Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -158,7 +158,7 @@ namespace Project.Controllers
                 return View(viewModel);
             }
         }
-        [AdminAuthorize]
+        [Authorize(Roles = "Admin")]
         // GET: Product/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
@@ -177,10 +177,11 @@ namespace Project.Controllers
             };
             return View(viewModel);
         }
-        [AdminAuthorize]
+      
         // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, Product product, List<int> imagesToDelete)
         {
             if (id != product.ProductId) // This case can only happen if the user manipulates the form
@@ -261,7 +262,7 @@ namespace Project.Controllers
                 return View(viewModel);
             }
         }
-        [AdminAuthorize]
+        [Authorize(Roles = "Admin")]
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(int id)
         {

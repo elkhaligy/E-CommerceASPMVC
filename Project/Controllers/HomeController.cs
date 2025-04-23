@@ -18,6 +18,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Forbidden()
+    {
+        return View();
+    }
+
     public IActionResult About()
     {
         return View();
