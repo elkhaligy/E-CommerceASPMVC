@@ -5,6 +5,7 @@ using Project.DTO;
 using Project.Models;
 using Project.Services;
 using Project.ViewModel;
+using YourNamespace.Filters;
 
 namespace Project.Controllers
 {
@@ -78,7 +79,7 @@ namespace Project.Controllers
                 return NotFound();
             }
         }
-        [Authorize(Roles = "Admin")]
+        [AdminAuthorize]
         // GET: Product/Create
         public async Task<IActionResult> Create()
         {
@@ -90,7 +91,7 @@ namespace Project.Controllers
             };
             return View(viewModel);
         }
-        [Authorize(Roles = "Admin")]
+        [AdminAuthorize]
         // POST: Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -157,7 +158,7 @@ namespace Project.Controllers
                 return View(viewModel);
             }
         }
-        [Authorize(Roles = "Admin")]
+        [AdminAuthorize]
         // GET: Product/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
@@ -176,7 +177,7 @@ namespace Project.Controllers
             };
             return View(viewModel);
         }
-        [Authorize(Roles = "Admin")]
+        [AdminAuthorize]
         // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -260,7 +261,7 @@ namespace Project.Controllers
                 return View(viewModel);
             }
         }
-        [Authorize(Roles = "Admin")]
+        [AdminAuthorize]
         // GET: Product/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
