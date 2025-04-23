@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project.Contract;
 using Project.ViewModel;
 
 namespace Project.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CustomerController : Controller
     {
         private readonly ICustomerRepository _customerRepository;
@@ -14,6 +16,7 @@ namespace Project.Controllers
         }
 
         // GET: Customer/Index
+
         public async Task<IActionResult> Index()
         {
             var customers = await _customerRepository.GetAllAsync();

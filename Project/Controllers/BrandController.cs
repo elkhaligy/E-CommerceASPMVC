@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project.Contract;
 using Project.Models;
 
 namespace Project.Controllers
-{
+{   
+    [Authorize(Roles = "Admin")]
     public class BrandController : Controller
     {
         private readonly IBrandRepository _brandRepository;
