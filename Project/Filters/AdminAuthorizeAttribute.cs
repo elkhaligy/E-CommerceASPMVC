@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Security.Claims;
 
 namespace YourNamespace.Filters
 {
@@ -7,16 +8,20 @@ namespace YourNamespace.Filters
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var role = context.HttpContext.Session.GetString("UserRole");
+            var user = context.HttpContext.User;
 
-            if (string.IsNullOrEmpty(role))
+            // Not logged in
+            if (user == null || user.Identity == null || !user.Identity.IsAuthenticated)
             {
-                // Not logged in
                 context.Result = new RedirectToActionResult("SignIn", "Admin", null);
+                return;
             }
-            else if (!role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+
+
+            // Check if user has Admin role
+            var roleClaim = user.FindFirst(ClaimTypes.Role);
+            if (roleClaim == null || !roleClaim.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             {
-                // Not an Admin
                 context.Result = new RedirectToActionResult("SignIn", "Admin", null);
             }
         }

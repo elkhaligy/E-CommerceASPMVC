@@ -68,8 +68,7 @@ namespace Project.Controllers
 
             // Set session
 
-            HttpContext.Session.SetString("AdminFirstName", admin.FirstName);
-            Console.WriteLine(HttpContext.Session.Id);
+         
 
             return RedirectToAction("Index");
 
