@@ -1,4 +1,8 @@
 @model Project.ViewModel.ProductViewModel
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var role = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+}
 
 @{
     Layout = "_LayoutTemplate";
@@ -21,10 +25,13 @@
             @TempData["ErrorMessage"]
         </div>
     }
+    @if (role == "Admin")
+    {
+         <p>
+            <a asp-action="Create" class="btn btn-primary">Create New</a>
+        </p>  
+    }
 
-    <p>
-        <a asp-action="Create" class="btn btn-primary">Create New</a>
-    </p>
 
     <div class="row mb-3">
         <div class="col-md-12">
@@ -91,8 +98,14 @@
                 <div class="card-footer">
                     <div class="btn-group">
                         <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-info">Details</a>
-                        <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-warning">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-danger">Delete</a>
+                            @if (role == "Admin")
+                            {
+                                   <p>
+                                <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-warning">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-danger">Delete</a>
+                                  </p>  
+                            }
+
                     </div>
                 </div>
             </div>

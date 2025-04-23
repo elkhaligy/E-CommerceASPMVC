@@ -30,7 +30,7 @@ namespace Project.Controllers
             _adminRepository = adminRepository;
             _context = context;
         }
-
+        [AdminAuthorize]
         // GET: Product
         public async Task<IActionResult> Index()
         {

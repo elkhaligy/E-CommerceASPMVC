@@ -28,7 +28,7 @@ namespace Project
             builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
             builder.Services.AddScoped<IPasswordHasher<Customer>, PasswordHasher<Customer>>();
             builder.Services.AddDistributedMemoryCache(); // ✅ Add this
-
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(20);
