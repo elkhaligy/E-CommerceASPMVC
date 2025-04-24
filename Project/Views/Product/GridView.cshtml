@@ -215,7 +215,7 @@
                                                     <img src="data:image/jpeg;base64,@Convert.ToBase64String(product.Images!.First().ImageData)"
                             class="card-img-top " alt="@product.Name" style="height: 200px; width:500px ; object-fit:contain ;">
                                                     <div class="button">
-                                                        <a href="product-details.html" class="btn"><i
+                                                        <a  class="btn" onclick="addToCart(@product.ProductId)"><i
                                                                 class="lni lni-cart"></i> Add to Cart</a>
                                                     </div>
                                                 </div>
