@@ -92,6 +92,20 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/custom.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Success and Remove Modals -->
+    <div id="successModal" class="notification-modal success">
+        <div class="notification-content">
+            <i class="lni lni-checkmark-circle"></i>
+            <p>Item added to cart successfully!</p>
+        </div>
+    </div>
+    <div id="removeModal" class="notification-modal remove">
+        <div class="notification-content">
+            <i class="lni lni-checkmark-circle"></i>
+            <p>Item removed from cart successfully!</p>
+        </div>
+    </div>
 </body>
 
 </html>

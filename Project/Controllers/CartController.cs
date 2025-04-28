@@ -29,7 +29,9 @@ namespace Project.Controllers
                     CartItemId = ci.CartItemId,
                     ProductId = ci.ProductId,
                     Quantity = ci.Quantity,
-                    ProductName = ci.Product.Name
+                    ProductName = ci.Product.Name,
+                    ProductImagePath = ci.Product.Images.FirstOrDefault()?.ImagePath ?? null,
+                    Price = ci.Product.Price
                 }).ToList(),
                 CreatedAt = customer.Cart.CreatedAt,
                 UpdatedAt = customer.Cart.UpdatedAt
@@ -56,20 +58,28 @@ namespace Project.Controllers
                 };
                 customer.Cart = cart;
             }
-
-            CartItem cartItem = new CartItem
+            // Check if the product already exists in the cart
+            var existingItems = cart.CartItems?.FirstOrDefault(ci => ci.ProductId == productId) ?? null;
+            if (existingItems != null)
             {
-                ProductId = productId,
-                Quantity = quantity
-            };
+                existingItems.Quantity += 1;
+            }
+            else
+            {
+                CartItem cartItem = new CartItem
+                {
+                    ProductId = productId,
+                    Quantity = quantity
+                };
+                cart.CartItems!.Add(cartItem);
+            }
 
-            cart.CartItems!.Add(cartItem);
             cart.UpdatedAt = DateTime.UtcNow;
             await _customerRepository.SaveChangesAsync();
             return Ok(new { status = "Added"});
         }
 
-        public async Task<IActionResult> RemoveFromCart(int productId)
+        public async Task<IActionResult> RemoveFromCart(int productId, int quantity)
         {
             Customer? customer = await _customerRepository.GetByEmailAsync(User.FindFirst(ClaimTypes.Email)!.Value);
             if (customer == null)
@@ -90,7 +100,14 @@ namespace Project.Controllers
             }
             // Remove that reference from CartItems list which is a proxy itself so .Remove method 
             // is a custom implemented one that change the tracking state of that reference
-            cart.CartItems!.Remove(cartItem);
+            if (cartItem.Quantity > 1)
+            {
+                cartItem.Quantity--;
+            }
+            else
+            {
+                cart.CartItems!.Remove(cartItem);
+            }
             cart.UpdatedAt = DateTime.UtcNow;
             await _customerRepository.SaveChangesAsync();
             return Ok(new {message = "Removed Item Successfully"});

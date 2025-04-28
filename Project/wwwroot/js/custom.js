@@ -4,8 +4,24 @@ document.addEventListener('DOMContentLoaded', () => {
     populateCart();
 });
 
+function showSuccessModal() {
+    const modal = document.getElementById('successModal');
+    modal.classList.add('show');
+    setTimeout(() => {
+        modal.classList.remove('show');
+    }, 3000);
+}
+
+function showRemoveModal() {
+    const modal = document.getElementById('removeModal');
+    modal.classList.add('show');
+    setTimeout(() => {
+        modal.classList.remove('show');
+    }, 3000);
+}
+
 function addToCart(productId) {
-    fetch('/Cart/AddToCart?productId=' + productId, {
+    fetch('/Cart/AddToCart?productId=' + productId + '&quantity=' + 1, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -15,17 +31,15 @@ function addToCart(productId) {
     .then(data => {
         console.log(data);
         populateCart();
-        alert('Item added to cart');
-        
+        showSuccessModal();
     })
     .catch(error => {
         console.error('Error:', error);
     });
-
 }
 
 function removeFromCart(productId) {
-    fetch('/Cart/RemoveFromCart?productId=' + productId, {
+    fetch('/Cart/RemoveFromCart?productId=' + productId + '&quantity=' + 1, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -34,12 +48,33 @@ function removeFromCart(productId) {
     .then(response => response.json())
     .then(data => {
         console.log(data);
-        populateCart();
+        const cartItemsContainer = document.getElementById('cart-items');
+        const items = cartItemsContainer.querySelectorAll('li');
+        items.forEach(li => {
+            // Assuming the remove button has the onclick with the productId
+            const removeBtn = li.querySelector('.remove');
+            if (removeBtn && removeBtn.getAttribute('onclick') === `removeFromCart(${productId})`) {
+                // check the quantity of the item
+                const quantity = li.querySelector('.quantity').textContent.split('x')[0];
+                if (quantity == 1) {
+                    li.remove();
+                } else {
+                    //  <p class="quantity">1x - <span class="amount">$35.00</span></p>
+                    li.querySelector('.quantity').innerHTML = quantity - 1 + 'x - ' + `<span class="amount">${li.querySelector('.amount').textContent}</span>`;
+                    console.log(quantity);
+                }
+            }
+        });
+        const totalItems = document.getElementById('total-items');
+        const totalItemsCounter = document.getElementById('total-items-counter');
+        const newCount = cartItemsContainer.querySelectorAll('li').length;
+        totalItems.innerHTML = newCount + ' Items';
+        totalItemsCounter.innerHTML = newCount;
+        showRemoveModal();
     })
     .catch(error => {
         console.error('Error:', error);
     });
-
 }
 
 function populateCart() {
@@ -73,17 +108,16 @@ function populateCart() {
         cartItems.forEach(item => {
             const li = document.createElement('li');
             li.innerHTML = `
-            <li>
                 <a onclick="removeFromCart(${item.productId})" class="remove" title="Remove this item"><i
                         class="lni lni-close"></i></a>
                 <div class="cart-img-head">
                     <a class="cart-img" href="product-details.html"><img
-                            src="/Template/assets/images/header/cart-items/item1.jpg" alt="#"></a>
+                            src="${item.productImagePath}" alt="#"></a>
                 </div>
                 <div class="content">
                     <h4><a href="product-details.html">
                             ${item.productName}</a></h4>
-                    <p class="quantity">${item.quantity}x - <span class="amount">${item.price}</span></p>
+                    <p class="quantity">${item.quantity}x - <span class="amount">${item.price}EGP</span></p>
                 </div>
             `;
             cartItemsContainer.appendChild(li);
