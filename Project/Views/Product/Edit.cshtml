@@ -62,7 +62,7 @@
                                     var image = Model.Product.Images.ElementAt(i);
                                     <div class="col-md-3 mb-2">
                                         <div class="card">
-                                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(image.ImageData)" 
+                                            <img src="@image.ImagePath" 
                                                  class="card-img-top" alt="Product Image" />
                                             <div class="card-body">
                                                 <div class="form-check">

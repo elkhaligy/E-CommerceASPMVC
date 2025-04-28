@@ -124,23 +124,31 @@ namespace Project.Controllers
                     return View(viewModel);
                 }
 
-                _productRepository.Add(product);
-                await _productRepository.SaveChangesAsync();    
+                // _productRepository.Add(product);
+                // await _productRepository.SaveChangesAsync();    
 
                 // Handle image uploads
                 foreach (var file in product.ImageFiles)
                 {
-                    using var ms = new MemoryStream();
-                    await file.CopyToAsync(ms);
-                    var imageBytes = ms.ToArray();
+                    var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                    var filePath = Path.Combine("wwwroot/images/products/", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
                     var productImage = new ProductImage
                     {
                         ProductId = product.ProductId,
-                        ImageData = imageBytes
+                        ImagePath = "/images/products/" + fileName
                     };
-                    await _context.ProductImages.AddAsync(productImage); // This needs changing when we implement the productimages service
+                    // await _context.ProductImages.AddAsync(productImage); 
+                    product!.Images!.Add(productImage);
                 }
-                await _context.SaveChangesAsync();
+                _productRepository.Add(product);
+                await _productRepository.SaveChangesAsync();    
+                // await _context.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "Product created successfully";
                 return RedirectToAction("Index");
@@ -218,6 +226,12 @@ namespace Project.Controllers
                         if (image != null)
                         {
                             _context.ProductImages.Remove(image);
+                            // Delete the file from the server
+                            var filePath = "wwwroot/" + image.ImagePath;
+                            if (System.IO.File.Exists(filePath))
+                            {
+                                System.IO.File.Delete(filePath);
+                            }
                         }
                     }
                     await _context.SaveChangesAsync();
@@ -229,14 +243,24 @@ namespace Project.Controllers
                     // Add new images
                     foreach (var file in product.ImageFiles)
                     {
-                        using var ms = new MemoryStream();
-                        await file.CopyToAsync(ms);
-                        var imageBytes = ms.ToArray();
+                        // This file is an IFormFile type and it has a method that is called CopyToAsync
+                        // This method allows us to copy the file to a file stream
+                        // so lets first generate a unique name for this file
+                        // and then make a path for this file 
+                        // and open a stream to that path and then copy the file to that path
+                        var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                        var filePath = Path.Combine("wwwroot/images/products/", fileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
                         var productImage = new ProductImage
                         {
                             ProductId = product.ProductId,
-                            ImageData = imageBytes
+                            ImagePath = "/images/products/" + fileName
                         };
+
                         await _context.ProductImages.AddAsync(productImage);
                     }
                     await _context.SaveChangesAsync();

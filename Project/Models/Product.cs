@@ -17,7 +17,7 @@ public class Product
     public virtual Brand? Brand { get; set; }
     public virtual ICollection<Review>? Reviews { get; set; }
     public virtual ICollection<ProductTag>? ProductTags { get; set; }
-    public virtual ICollection<ProductImage>? Images { get; set; }
+    public virtual ICollection<ProductImage>? Images { get; set; } = new List<ProductImage>();
     public virtual ICollection<CartItem>? CartItems { get; set; }
     public virtual ICollection<OrderItem>? Items { get; set; }
     public virtual ICollection<Tag>? Tags { get; set; }
