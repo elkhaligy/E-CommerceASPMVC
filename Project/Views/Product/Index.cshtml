@@ -71,7 +71,7 @@
     </div>
 
     <div class="row">
-        @foreach (var item in Model.Products!)
+        @foreach (var item in Model.PagedProducts.Items!)
         {
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
@@ -112,4 +112,19 @@
         </div>
                 }
     </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <!-- Add pagination controls here -->
+            <div class="pagination">
+                @if (Model.PagedProducts != null && Model.PagedProducts.TotalPages > 1)
+                {
+                    for (int i = 1; i <= Model.PagedProducts.TotalPages; i++)
+                    {
+                        <a asp-action="Index" asp-route-page="@i" class="btn btn-outline-secondary">@i</a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
 </div>

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Project.Contract;
+using Project.DTO;
 using Project.Models;
 
 namespace Project.Repositories
@@ -100,28 +101,56 @@ namespace Project.Repositories
                     .ToListAsync();
             }
         }
+        //paging
+    
+            public async Task<PagedResult<Product>> GetPagedProductsAsync(int pageNumber, int pageSize)
+            {
+            var totalItems = await _dbSet.CountAsync();
+
+            var items = await _dbSet
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.Admin)
+                .Include(p => p.Images)
+                .OrderBy(p => p.ProductId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<Product>
+            {
+                Items = items,
+                TotalItems = totalItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         
-        //public async Task AddAsync(Product product)
-        //{
-        //    await _context.Products.AddAsync(product);
-        //    await SaveChangesAsync();
-        //}
 
-        //public async Task UpdateAsync(Product product)
-        //{
-        //    _context.Products.Update(product);
-        //    await SaveChangesAsync();
-        //}
 
-        //public async Task DeleteAsync(Product product)
-        //{
-        //    _context.Products.Remove(product);
-        //    await SaveChangesAsync();
-        //}
+             }
 
-        //public async Task SaveChangesAsync()
-        //{
-        //    await _context.SaveChangesAsync();
-        //}
-    }
+
+    //public async Task AddAsync(Product product)
+    //{
+    //    await _context.Products.AddAsync(product);
+    //    await SaveChangesAsync();
+    //}
+
+    //public async Task UpdateAsync(Product product)
+    //{
+    //    _context.Products.Update(product);
+    //    await SaveChangesAsync();
+    //}
+
+    //public async Task DeleteAsync(Product product)
+    //{
+    //    _context.Products.Remove(product);
+    //    await SaveChangesAsync();
+    //}
+
+    //public async Task SaveChangesAsync()
+    //{
+    //    await _context.SaveChangesAsync();
+    //}
+}
 } 

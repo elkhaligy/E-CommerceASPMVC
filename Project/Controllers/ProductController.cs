@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Project.Contract;
 using Project.DTO;
 using Project.Models;
 using Project.Services;
 using Project.ViewModel;
+using System.Drawing.Printing;
 
 
 namespace Project.Controllers
@@ -32,28 +35,32 @@ namespace Project.Controllers
         }
         [Authorize(Roles = "Admin")]
         // GET: Product
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page=1)
         {
+            int pageSize = 9;
+            var pagedResult = await _productRepository.GetPagedProductsAsync(page, pageSize);
             var products = await _productRepository.GetAllAsync();
             var categories = await _categoryRepository.GetAllAsync();
             var brands = await _brandRepository.GetAllAsync();
             var viewModel = new ProductViewModel
             {
-                Products = products,
-            Categories = categories,
+                PagedProducts = pagedResult,
+                Categories = categories,
                 Brands = brands
             };
             return View(viewModel);
         }
-        public async Task<IActionResult> GridView()
+        public async Task<IActionResult> GridView(int page = 1)
         {
+            int pageSize = 9;
+            var pagedResult = await _productRepository.GetPagedProductsAsync(page, pageSize);
             var products = await _productRepository.GetAllAsync();
             var categories = await _categoryRepository.GetAllAsync();
             var brands = await _brandRepository.GetAllAsync();
             var viewModel = new ProductViewModel
             {
-                Products = products,
-            Categories = categories,
+                PagedProducts = pagedResult,
+                Categories = categories,
                 Brands = brands
             };
             return View(viewModel);
