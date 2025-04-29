@@ -269,9 +269,19 @@
                                                 {
                                                     for (int i = 1; i <= Model.PagedProducts.TotalPages; i++)
                                                     {
+                                                        @if (i == Model.PagedProducts.PageNumber)
+                                                        {
+                                                            <li class="active">
+                                                                <a asp-action="GridView" asp-route-page="@i">@i</a>
+                                                            </li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li>
+                                                                <a asp-action="GridView" asp-route-page="@i">@i</a>
+                                                            </li>
+                                                        }
 
-
-                                                    <li><a asp-action="GridView" asp-route-page="@i">@i<i class="lni lni-chevron-right"></i></a></li>
                                                     }
                                                 }
 
@@ -345,7 +355,18 @@
                                                 {
                                                     for (int i = 1; i <= Model.PagedProducts.TotalPages; i++)
                                                     {
-                                                    <li><a asp-action="GridView" asp-route-page="@i">@i<i class="lni lni-chevron-right"></i></a></li>
+                                                        @if (i == Model.PagedProducts.PageNumber)
+                                                        {
+                                                            <li class="active">
+                                                                <a asp-action="GridView" asp-route-page="@i">@i</a>
+                                                            </li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li>
+                                                                <a asp-action="GridView" asp-route-page="@i">@i</a>
+                                                            </li>
+                                                        }
 
                                                     }
                                                 }
