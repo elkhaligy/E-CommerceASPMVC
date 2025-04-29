@@ -14,5 +14,8 @@ namespace Project.Contract
         Task<IEnumerable<Product>?> FilterByCategoryAndBrandAsync(int? categoryId, int? brandId);
         Task<PagedResult<Product>> GetPagedProductsAsync(int pageNumber, int pageSize);
 
+        Task<IEnumerable<Product>?> Filter(int? categoryId, int? brandId, string? sortOrder, string? searchTerm, int pageNumber = 1, int pageSize = 9);
+        Task<int> GetTotalItemsAsync(int? categoryId, int? brandId, string? sortOrder, string? searchTerm, int pageNumber = 1, int pageSize = 9);
+
     }
 }

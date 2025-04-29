@@ -12,5 +12,12 @@ namespace Project.ViewModel
         public IEnumerable<Brand>? Brands { get; set; }
         public int? SelectedCategoryId { get; set; }
         public int? SelectedBrandId { get; set; }
+        public string? SearchTerm { get; set; }
+        public string? SortOrder { get; set; }
+        public int? PageNumber { get; set; }
+        public int? TotalItems { get; set; }
+        public int PageSize { get; set; }
+        public int TotalPages => (int)Math.Ceiling((double)TotalItems / PageSize);
+
     }
 }

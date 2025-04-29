@@ -100,7 +100,7 @@ namespace Project.Controllers
                 };
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProperties);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("GridView", "Product");
             }
             else
             {

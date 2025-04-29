@@ -50,19 +50,28 @@ namespace Project.Controllers
             };
             return View(viewModel);
         }
-        public async Task<IActionResult> GridView(int page = 1)
+        public async Task<IActionResult> GridView(int? brandId, int? categoryId, string? sortOrder, string? searchTerm, int page= 1)
         {
-            int pageSize = 9;
-            var pagedResult = await _productRepository.GetPagedProductsAsync(page, pageSize);
-            var products = await _productRepository.GetAllAsync();
+            // We no logner use PagedProducts here
+            int pageSize = 6;
+            List<Product>? products = await _productRepository.Filter(categoryId, brandId, sortOrder, searchTerm, page, pageSize) as List<Product>;
+            var totalItems = await _productRepository.GetTotalItemsAsync(categoryId, brandId, sortOrder, searchTerm, page, pageSize);
             var categories = await _categoryRepository.GetAllAsync();
             var brands = await _brandRepository.GetAllAsync();
             var viewModel = new ProductViewModel
             {
-                PagedProducts = pagedResult,
+                Products = products,
+                TotalItems = totalItems,
                 Categories = categories,
-                Brands = brands
+                Brands = brands,
+                SearchTerm = searchTerm,
+                SortOrder = sortOrder,
+                PageNumber = page,
+                SelectedCategoryId = categoryId,
+                SelectedBrandId = brandId,
+                PageSize = pageSize,
             };
+            ViewBag.SearchTerm = searchTerm;
             return View(viewModel);
         }
         // GET: Product/Details/5
@@ -334,34 +343,6 @@ namespace Project.Controllers
             }
         }
 
-        // GET: Product/Search
-        public async Task<IActionResult> Search(string searchTerm)
-        {
 
-            var products = await _productRepository.SearchByNameAsync(searchTerm);
-            ViewBag.SearchTerm = searchTerm;
-            var viewMode = new ProductViewModel
-            {
-                Products = products,
-                Categories = await _categoryRepository.GetAllAsync(),
-                Brands = await _brandRepository.GetAllAsync(),
-            };
-            return View("GridView", viewMode);
-        }
-
-        // GET: Product/Filter
-        public async Task<IActionResult> Filter(int? categoryId, int? brandId)
-        {
-            var products = await _productRepository.FilterByCategoryAndBrandAsync(categoryId, brandId);
-            var viewMode = new ProductViewModel
-            {
-                Products = products,
-                Categories = await _categoryRepository.GetAllAsync(),
-                Brands = await _brandRepository.GetAllAsync(),
-                SelectedCategoryId = categoryId,
-                SelectedBrandId = brandId
-            };
-            return View("Index", viewMode);
-        }
     }
 }
