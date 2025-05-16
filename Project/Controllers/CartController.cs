@@ -20,18 +20,25 @@ namespace Project.Controllers
         }
         public async Task<IActionResult> GetCartItems()
         {
+            var emailClaim = User.FindFirst(ClaimTypes.Email);
+            if (emailClaim == null)
+                return Unauthorized("Email claim not found");
             Customer customer = await _customerRepository.GetByEmailAsync(User.FindFirst(ClaimTypes.Email)!.Value)! ?? throw new Exception("Customer not found");
+            if (customer == null)
+                return NotFound("Customer not found");
+            if (customer.Cart == null)
+                return NotFound("Cart not found for this customer.");
             CartDTO cartDto = new CartDTO
             {
                 CartId = customer.Cart.CartId,
-                CartItems = customer.Cart.CartItems.Select(ci => new CartItemDTO 
+                CartItems = customer.Cart.CartItems?.Select(ci => new CartItemDTO
                 {
                     CartItemId = ci.CartItemId,
                     ProductId = ci.ProductId,
                     Quantity = ci.Quantity,
-                    ProductName = ci.Product.Name,
-                    ProductImagePath = ci.Product.Images.FirstOrDefault()?.ImagePath ?? null,
-                    Price = ci.Product.Price
+                    ProductName = ci.Product?.Name,
+                    ProductImagePath = ci.Product?.Images?.FirstOrDefault()?.ImagePath ?? null,
+                    Price = ci.Product?.Price ?? 0
                 }).ToList(),
                 CreatedAt = customer.Cart.CreatedAt,
                 UpdatedAt = customer.Cart.UpdatedAt
