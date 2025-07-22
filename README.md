@@ -1,4 +1,4 @@
-[▶️ Live Demo (LinkedIn)](https://www.linkedin.com/posts/khaled-mo777_aspnetcore-ecommerce-dotnet-activity-7329047707262541824-TQox?utm_source=share&utm_medium=member_desktop&rcm=ACoAACt-txABvFRTTZOldg5fdCMLQHUVZAHG5Do)
+[▶️ Video Demo (LinkedIn)](https://www.linkedin.com/posts/khaled-mo777_aspnetcore-ecommerce-dotnet-activity-7329047707262541824-TQox?utm_source=share&utm_medium=member_desktop&rcm=ACoAACt-txABvFRTTZOldg5fdCMLQHUVZAHG5Do)
 
 # 🛒 ASP.NET Core E-Commerce Platform
 
